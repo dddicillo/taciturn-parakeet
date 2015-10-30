@@ -1,0 +1,31 @@
+---
+# Runs apt-get update && apt-get dist-upgrade -y, will reboot machine and come back if needed.
+# Only add this role if you want to run updates every time you run ansible.
+
+- name: Run apt-get update && apt-get dist-upgrade
+  apt: update_cache=yes upgrade=dist
+
+- name: Check if reboot required
+  stat: path=/var/run/reboot-required get_md5=no
+  register: reboot_file
+
+- name: restart server to finish updates
+  command: shutdown -r now "Ansible updates triggered"
+  when: reboot_file.stat.exists and not vagrant
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: Tell user run vagrant reload
+  debug: msg="You will need to run vagrant reload after provisioning completes!"
+  when: reboot_file.stat.exists and vagrant
+
+- name: waiting for server to come back
+  local_action: wait_for
+    host={{ inventory_hostname }}
+    port=22
+    delay=3
+    timeout=300
+    state=started
+  when: not vagrant
+  sudo: false

@@ -1,0 +1,29 @@
+---
+# Nginx Config
+- name: add nginx stable ppa
+  apt_repository: repo='ppa:nginx/stable' update_cache=yes
+
+- name: install nginx
+  apt: name=nginx state=latest
+  notify:
+  - restart nginx
+
+- name: update nginx.conf config
+  template: src=nginx/nginx.conf.j2 dest=/etc/nginx/nginx.conf backup=yes
+  notify:
+  - restart nginx
+
+- name: install clamscan for webroot
+  cron: name="clamscan webroot run" job="clamscan -i -r --no-summary --move={{ clamscan_infected_dir }} {{ web_root_prefix }}"
+          minute={{ 59 | random }} state=present
+
+- name: install default nginx site
+  template: src=nginx/default.j2 dest=/etc/nginx/sites-enabled/default
+  notify:
+    - restart nginx
+
+#  # Pick which flavor you would like
+- name: nginx default site config (laravel)
+  template: src=nginx/express.j2 dest=/etc/nginx/sites-enabled/express
+  notify:
+    - restart nginx

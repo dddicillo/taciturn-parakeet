@@ -1,0 +1,6 @@
+---
+- name: install express-generator node.js package
+  npm: name=express-generator global=yes state=latest
+
+- name: install guulp node.js package
+  npm: name=gulp global=yes state=latest

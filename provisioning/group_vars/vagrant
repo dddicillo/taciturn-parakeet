@@ -1,0 +1,8 @@
+---
+vagrant: true
+remote_user: vagrant
+server_name: voicechat.dev
+
+project_name: voice-chat
+project_root: /vagrant
+project_repo: git@github.com:dddicillo/taciturn-parakeet.git

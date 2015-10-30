@@ -1,0 +1,9 @@
+---
+- hosts: webservers
+  remote_user: "{{ remote_user }}"
+  sudo: true
+  roles:
+    - apt-dist-upgrade
+    - common
+    - node-modules
+    - web-nginx

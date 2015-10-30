@@ -1,0 +1,4 @@
+---
+web_user: deploy
+web_group: www-data
+web_root_prefix: /var/www

@@ -1,0 +1,106 @@
+---
+- name: make sure we have an ubuntu group
+  group: name=ubuntu state=present
+
+- name: make sure we have a deploy group
+  group: name=deploy state=present
+
+- name: make sure we have an ubuntu user
+  user: name=ubuntu group=ubuntu createhome=yes ssh_key_bits=4096 generate_ssh_key=yes shell=/bin/bash
+
+- name: make sure the ubuntu user can sudo
+  template: src=sudoers.d/90-ubuntu.j2 dest=/etc/sudoers.d/90-ubuntu mode=0440
+
+- name: make sure we have a deploy user
+  user: name=deploy group=deploy createhome=yes ssh_key_bits=4096 generate_ssh_key=yes shell=/bin/bash
+
+- name: update ubuntu user authorized_keys
+  authorized_key: user=ubuntu key="{{ item }}" state=present
+  with_file:
+    - public_keys/derek.pub
+
+- name: update deploy user authorized_keys
+  authorized_key: user=deploy key="{{ item }}" state=present
+  with_file:
+    - public_keys/derek.pub
+
+- name: set hostname
+  hostname: name={{ server_name }}
+
+- name: update apt cache
+  apt: update_cache=yes
+
+- name: install etckeeper
+  apt: name=etckeeper state=latest
+  register: etckeeper_installed
+
+- name: uninit bzr repo
+  command: "/usr/bin/etckeeper uninit -f"
+  when: etckeeper_installed.changed
+
+- name: add updated git ppa
+  apt_repository: repo='ppa:git-core/ppa' update_cache=yes
+
+- name: install git
+  apt: name=git state=latest
+
+- name: set etckeeper to use git
+  copy: src=etckeeper/etckeeper.conf dest=/etc/etckeeper/etckeeper.conf
+
+- name: init etckeeper
+  command: /usr/bin/etckeeper init creates=/etc/.git
+
+- name: check for modified files
+  command: /usr/bin/etckeeper unclean
+  register: etckeeper_unclean
+  failed_when: "'' != etckeeper_unclean.stderr"
+
+- name: etckeeper commit before run
+  command: "/usr/bin/etckeeper commit 'Before ansible run {{ ansible_date_time.iso8601 }}'"
+  when: etckeeper_unclean.rc == 0
+
+- name: install common packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - htop
+    - fail2ban
+    - unattended-upgrades
+    - clamav
+
+- name: create colors directory
+  file: path=/etc/vim/colors state=directory
+
+- name: install molokai vim colorscheme
+  copy: src=vim/colors/molokai.vim dest=/etc/vim/colors/molokai.vim
+
+- name: install better vimrc.local
+  copy: src=vim/vimrc.local dest=/etc/vim/vimrc.local
+
+- name: global git config
+  copy: src=git/gitconfig dest=/etc/gitconfig
+
+- name: allow automatic security upgrades
+  copy: src=auto_upgrades/20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+- name: tmux vim bindings
+  copy: src=tmux/tmux.conf dest=/etc/tmux.conf
+
+- name: created infected files directory
+  file: path={{ clamscan_infected_dir }} mode=700 state=directory
+
+- name: setup clamscan to run at random each hour
+  cron: name="clamscan run"
+          job="clamscan -i -r --no-summary --move={{ clamscan_infected_dir }} /etc/ /tmp /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+          minute={{ 59 | random }} state=present
+
+- name: add nodejs repo key
+  apt_key: url="https://deb.nodesource.com/gpgkey/nodesource.gpg.key" state=present
+
+- name: add nodejs repo
+  apt_repository: repo="deb https://deb.nodesource.com/node_0.12 trusty main" state=present
+
+- name: add nodejs source repo
+  apt_repository: repo="deb-src https://deb.nodesource.com/node_0.12 trusty main"  update_cache=true state=present
+
+- name: install nodejs
+  apt: name=nodejs state=latest

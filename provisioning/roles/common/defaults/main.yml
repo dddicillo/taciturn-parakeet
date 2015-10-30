@@ -1,0 +1,13 @@
+---
+server_name: change-me
+
+postfix_forward_email_enabled: false
+postfix_forward_email: dev@rollonapp.com
+
+mailcatcher_enabled: false
+
+mandrill_enabled: false
+mandrill_username: change-me
+mandrill_api_key: change-me
+
+clamscan_infected_dir: /var/clamav-infected
