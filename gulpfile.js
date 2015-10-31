@@ -14,11 +14,11 @@ var server_name = process.env.SERVER_NAME;
 var web_root = web_root_prefix + '/' + server_name + '/public';
 var paths = {
   js: {
-    src: 'public/javascripts/**/*.js',
+    src: ['public/javascripts/**/*.js', 'vendor/javascripts/**/*.js'],
     dest: web_root + '/javascripts'
   },
   css: {
-    src: 'public/stylesheets/**/*.scss',
+    src: ['public/stylesheets/**/*.scss', 'vendor/stylesheets/**/*.scss'],
     dest: web_root + '/stylesheets'
   },
   img: {
