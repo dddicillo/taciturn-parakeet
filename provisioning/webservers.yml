@@ -6,4 +6,5 @@
     - apt-dist-upgrade
     - common
     - node-modules
+    - ruby-gems
     - web-nginx

@@ -11,8 +11,9 @@ server {
 
   charset utf-8;
 
-  root {{ web_root_prefix }}/{{ server_name }}/public;
-  index index.html index.htm;
+  location ~ ^/(images/|javascripts/|stylesheets/|robots.txt|humans.txt|favicon.ico) {
+    root {{ web_root_prefix }}/{{ server_name }}/public;
+  }
 
   server_name {{ server_name }};
 

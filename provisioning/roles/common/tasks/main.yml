@@ -67,6 +67,9 @@
     - unattended-upgrades
     - clamav
 
+- name: install .bash_profile
+  template: src=bash/bash_profile.j2 dest=/home/{{ remote_user }}/.bash_profile
+
 - name: create colors directory
   file: path=/etc/vim/colors state=directory
 
