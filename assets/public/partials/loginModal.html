@@ -2,10 +2,12 @@
   <h3 class="modal-title">Login</h3>
 </div>
 
-<form novalidate>
+<form ng-submit="vm.submit()" novalidate>
   <div class="modal-body">
 
-  <formly-form model="vm.login" fields="vm.loginFields" form="vm.loginForm">
+  <div flash-message></div>
+
+  <formly-form model="vm.credentials" fields="vm.loginFields" form="vm.loginForm">
   </formly-form>
 
     <div class="modal-footer">

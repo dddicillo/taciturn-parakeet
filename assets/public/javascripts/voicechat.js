@@ -7,12 +7,14 @@ import ModalInstanceController from './controllers/ModalInstanceController';
   const app = angular.module('voice-chat', [
     'ngRoute',
     'ngMessages',
+    'flash',
     'ui.bootstrap',
     'formly',
     'formlyBootstrap'
   ]);
 
-  app.config(['$routeProvider', 'formlyConfigProvider', function($routeProvider, formlyConfigProvider) {
+  app.config(['$routeProvider', 'formlyConfigProvider',
+  function($routeProvider, formlyConfigProvider) {
 
     $routeProvider
     .when('/', {

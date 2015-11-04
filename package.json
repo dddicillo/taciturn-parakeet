@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "angular": "^1.4.7",
+    "angular-flash": "^1.2.0",
+    "angular-flash-alert": "^1.1.1",
     "angular-formly": "^7.3.2",
     "angular-formly-templates-bootstrap": "^6.1.5",
     "angular-messages": "^1.4.7",
