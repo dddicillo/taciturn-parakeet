@@ -1,7 +1,10 @@
 doctype html
-html
+html(ng-app='voice-chat' ng-strict-di)
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-custom.css')
+    script(src='/javascripts/deps.js')
+    script(src='/javascripts/voicechat.min.js')
   body
     block content
+    div(ng-view)

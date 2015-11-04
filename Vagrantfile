@@ -27,8 +27,11 @@ Vagrant.configure(2) do |config|
     cached_addresses[vm.name]
   end
 
-  config.vm.synced_folder ".", "/vagrant/#{config.vm.hostname}", type: "nfs"
+  config.vm.synced_folder ".", "/vagrant/#{config.vm.hostname}", type: "nfs", mount_options: ['actimeo=2']
   config.bindfs.bind_folder "/vagrant/#{config.vm.hostname}", "/vagrant/#{config.vm.hostname}"
+
+  config.vm.synced_folder "/var/www/voicechat.dev/public", "/var/www/voicechat.dev/public", type: "nfs", mount_options: ['actimeo=2']
+  config.bindfs.bind_folder "/var/www/voicechat.dev/public", "/var/www/voicechat.dev/public"
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
