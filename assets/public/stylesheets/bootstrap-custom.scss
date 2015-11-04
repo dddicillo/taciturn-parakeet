@@ -1,0 +1,11 @@
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+// Override defaults
+
+// Border radius
+$border-radius-base:        0px;
+$border-radius-large:       0px;
+$border-radius-small:       0px;
+
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "forms";
