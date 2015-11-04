@@ -1,11 +1,12 @@
 class ModalInstanceController {
 
-  constructor($uibModalInstance, $log) {
+  constructor($uibModalInstance, $log, Flash) {
     'ngInject';
     this.$uibModalInstance = $uibModalInstance;
     this.$log = $log;
+    this.Flash = Flash;
 
-    this.login = {};
+    this.credentials = {};
     this.loginFields = [
       {
         key: 'username',
@@ -33,13 +34,12 @@ class ModalInstanceController {
   }
 
   submit() {
-    this.$log.info(credentials);
+    this.$log.info(this.credentials);
     // TODO: Implement Login Logic
 
     // Validate Form
-    if (vm.loginForm.$invalid) {
-      this.$log.info(vm.loginForm.$error);
-      this.$log.info(vm.username.$error);
+    if (this.loginForm.$invalid) {
+      this.Flash.create('danger', 'Fix the errors and try again!', 'alert-danger');
       return;
     }
 

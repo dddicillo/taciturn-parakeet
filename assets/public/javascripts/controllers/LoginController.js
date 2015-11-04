@@ -1,9 +1,11 @@
 class LoginController {
 
-  constructor($uibModal, $log) {
+  constructor($uibModal, $log, Flash) {
     'ngInject';
+    var vm = this;
     this.$uibModal = $uibModal;
     this.$log = $log;
+    this.Flash = Flash;
   }
 
   open() {
@@ -13,10 +15,10 @@ class LoginController {
       controllerAs: 'vm'
     });
 
-    modalInstance.result.then(function (selectedItem) {
-    }, function () {
-      this.$log.info('Modal dismissed at: ' + new Date());
-    });
+    modalInstance.result.then(function () {
+    }, (function () {
+      this.Flash.dismiss();
+    }).bind(this));
   }
 }
 

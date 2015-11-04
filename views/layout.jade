@@ -4,6 +4,7 @@ html(ng-app='voice-chat' ng-strict-di)
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap-custom.css')
     script(src='/javascripts/deps.js')
+    script(src='/javascripts/angular-flash.js') // Doesn't play nice with gulp right now
     script(src='/javascripts/voicechat.min.js')
   body
     block content
