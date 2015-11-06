@@ -2,3 +2,4 @@
 node_modules/
 .vagrant/
 assets/dev/
+*.log
