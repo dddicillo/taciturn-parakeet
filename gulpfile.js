@@ -29,6 +29,7 @@ const paths = {
     src: ['node_modules/angular/angular.js',
           'node_modules/angular-route/angular-route.js',
           'node_modules/angular-messages/angular-messages.js',
+          'node_modules/ngstorage/ngStorage.js',
           'node_modules/angular-flash-alert/dist/angular-flash.js',
           'node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.js',
           'node_modules/api-check/dist/api-check.js',
