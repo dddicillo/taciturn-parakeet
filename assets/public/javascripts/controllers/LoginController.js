@@ -2,7 +2,6 @@ class LoginController {
 
   constructor($uibModal, $log, Flash) {
     'ngInject';
-    var vm = this;
     this.$uibModal = $uibModal;
     this.$log = $log;
     this.Flash = Flash;
