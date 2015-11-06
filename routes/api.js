@@ -20,17 +20,21 @@ router.post('/login', function (req, res) {
   if (!req.body || !req.body.username || !req.body.password)
     return res.sendStatus(400);
 
-  const failMessage = 'Username or password incorrect!';
+  const failResponse = {
+    success: false,
+    message: 'Username or password incorrect!',
+    status: 'danger'
+  }
   User.findOne({ username: req.body.username }, function(err, user) {
     if (err) res.json(err);
 
     if (!user) {
-      res.json({ success: false, message: failMessage });
+      res.json(failResponse);
     } else if (user) {
 
       // Check if password matches
       if (user.password != req.body.password) {
-        res.json({ success: false, message: failMessage });
+        res.json(failResponse);
       } else {
 
         // Create a token
@@ -42,6 +46,7 @@ router.post('/login', function (req, res) {
         res.json({
           success: true,
           message: 'Login successful!',
+          status: 'success',
           token: token
         });
       }

@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h3 class="modal-title">Login</h3>
+</div>
+
+<form ng-submit="vm.submit()" novalidate>
+  <div class="modal-body">
+
+  <div flash-message></div>
+
+  <formly-form model="vm.credentials" fields="vm.loginFields" form="vm.loginForm">
+  </formly-form>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">Login</button>
+      <button class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
+    </div>
+  </div>
+</form>
