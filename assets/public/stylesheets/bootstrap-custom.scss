@@ -7,5 +7,26 @@ $border-radius-base:        0px;
 $border-radius-large:       0px;
 $border-radius-small:       0px;
 
+@import "node_modules/angular-material/angular-material.scss";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "forms";
+
+md-toolbar:not(.md-menu-toolbar) .md-button.md-raised {
+  color: rgba(0,0,0,0.87);
+}
+
+md-toolbar.md-short {
+  height: 32px;
+  min-height: 32px;
+  .ng-hide-add, .ng-hide-remove {} // TODO: Fix animation
+}
+
+md-whiteframe.homepage-tile {
+  height: 100%;
+}
+
+.s192 {
+  width: 192px;
+  height: 192px;
+  color: rgb(63,81,181);
+}

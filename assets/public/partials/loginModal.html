@@ -1,18 +1,36 @@
-<div class="modal-header">
-  <h3 class="modal-title">Login</h3>
-</div>
+<md-dialog ng-cloak>
+  <form ng-submit="vm.submit()" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Login</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="min-width:500px;max-height:810px; ">
 
-<form ng-submit="vm.submit()" novalidate>
-  <div class="modal-body">
+      <!-- Validation Flash Message -->
+      <!-- TODO: Fix animation -->
+      <md-toolbar class="md-warn md-short" ng-show="$root.hasFlash">
+        <div class="md-toolbar-tools">
+          <h5 dynamic="$root.flash.text"></h5>
+        </div>
+      </md-toolbar>
 
-  <div flash-message></div>
+      <div class="md-dialog-content">
 
-  <formly-form model="vm.credentials" fields="vm.loginFields" form="vm.loginForm">
-  </formly-form>
+          <formly-form model="vm.credentials" fields="vm.loginFields" form="vm.loginForm">
+          </formly-form>
 
-    <div class="modal-footer">
-      <button class="btn btn-primary" type="submit">Login</button>
-      <button class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
-    </div>
-  </div>
-</form>
+          <div layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-primary" type="submit">Login</md-button>
+            <md-button type="button" ng-click="vm.cancel()">Cancel</md-button>
+          </div>
+
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,7 +1,9 @@
+import MainController from './controllers/MainController';
 import LoginController from './controllers/LoginController';
-import ModalInstanceController from './controllers/ModalInstanceController';
+import LoginDialogController from './controllers/LoginDialogController';
 import UsersApi from './services/UsersApi';
 import AuthApi from './services/AuthApi';
+import CustomFlashDirective from './directives/CustomFlashDirective';
 import AuthInterceptor from './interceptors/AuthInterceptor';
 
 (function() {
@@ -11,14 +13,16 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
     'ngRoute',
     'ngMessages',
     'ngStorage',
+    'ngAria',
+    'ngAnimate',
+    'ngMaterial',
     'flash',
     'ui.bootstrap',
     'formly',
     'formlyBootstrap'
   ]);
 
-  app.config(['$routeProvider', 'formlyConfigProvider', '$localStorageProvider',
-  function($routeProvider, formlyConfigProvider, $localStorageProvider) {
+  app.config(function($routeProvider) {
 
     $routeProvider
     .when('/', {
@@ -27,7 +31,23 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
     .otherwise({
       redirectTo: '/'
     });
+  });
 
+  app.controller('MainController', MainController);
+  app.controller('LoginController', LoginController);
+  app.controller('LoginDialogController', LoginDialogController);
+
+  app.service('UsersApi', UsersApi);
+  app.service('AuthApi', AuthApi);
+
+  app.directive('customFlash', CustomFlashDirective);
+
+  app.service('AuthInterceptor', AuthInterceptor);
+  app.config(function($httpProvider) {
+    $httpProvider.interceptors.push('AuthInterceptor');
+  });
+
+  app.config(function(formlyConfigProvider) {
     formlyConfigProvider.setType({
         name: 'input',
         templateUrl: 'partials/inputTemplate.html',
@@ -36,19 +56,10 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
     formlyConfigProvider.setWrapper({
       templateUrl: 'partials/formlyWrapper.html'
     });
+  });
 
+  app.config(function($localStorageProvider) {
     $localStorageProvider.setKeyPrefix('voicechat');
-  }]);
-
-  app.controller('LoginController', LoginController);
-  app.controller('ModalInstanceController', ModalInstanceController);
-
-  app.service('UsersApi', UsersApi);
-  app.service('AuthApi', AuthApi);
-
-  app.service('AuthInterceptor', AuthInterceptor);
-  app.config(function($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
   });
 
   app.constant('API', '/api/v1');

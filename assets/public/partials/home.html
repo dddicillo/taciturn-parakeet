@@ -1,6 +1,3 @@
-<h1>Home Page</h1>
-
-<div ng-controller="LoginController as vm">
-  <button type="button" class="btn btn-default" ng-click="vm.open()">Login</button>
-  <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-</div>
+<!-- Home Screen Before Authentication -->
+<div ng-hide='vm.isAuthed()' ng-include="'partials/cover.html'"></div>
+<div ng-show='vm.isAuthed()' ng-include="'partials/main.html'"></div>

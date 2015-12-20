@@ -30,6 +30,9 @@ const paths = {
           'node_modules/angular-route/angular-route.js',
           'node_modules/angular-messages/angular-messages.js',
           'node_modules/ngstorage/ngStorage.js',
+          'node_modules/angular-aria/angular-aria.js',
+          'node_modules/angular-animate/angular-animate.js',
+          'node_modules/angular-material/angular-material.js',
           'node_modules/angular-flash-alert/dist/angular-flash.js',
           'node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.js',
           'node_modules/api-check/dist/api-check.js',
@@ -43,7 +46,7 @@ const paths = {
     dest: web_root + '/stylesheets'
   },
   img: {
-    src: 'assets/public/images/*',
+    src: 'assets/public/images/**',
     dest: web_root + '/images'
   },
   html: {
