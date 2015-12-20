@@ -1,9 +1,9 @@
-class ModalInstanceController {
+class LoginDialogController {
 
-  constructor($uibModalInstance, $log, Flash, AuthApi) {
+  constructor($mdDialog, Flash, AuthApi) {
     'ngInject';
-    this.$uibModalInstance = $uibModalInstance;
-    this.$log = $log;
+    this.$mdDialog = $mdDialog;
+
     this.Flash = Flash;
     this.AuthApi = AuthApi;
 
@@ -14,7 +14,6 @@ class ModalInstanceController {
         type: 'input',
         templateOptions: {
           label: 'Username',
-          placeholder: 'Username',
           required: true,
           minlength: 6,
           maxlength: 20
@@ -26,12 +25,16 @@ class ModalInstanceController {
         templateOptions: {
           type: 'password',
           label: 'Password',
-          placeholder: 'Password',
           required: true,
           minlength: 8
         }
       }
     ];
+    this.Flash.dismiss();
+  }
+
+  cancel() {
+    this.$mdDialog.cancel();
   }
 
   submit() {
@@ -39,9 +42,11 @@ class ModalInstanceController {
 
     // Validate Form
     if (this.loginForm.$invalid) {
-      this.Flash.create('danger', 'Fix the errors and try again!', 'alert-danger');
-      this.loginForm.formly_1_input_username_0.$setTouched();
-      this.loginForm.formly_1_input_password_1.$setTouched();
+      this.Flash.create('danger', 'Fix the errors and try again!');
+      const usernameField = this.loginForm.$name + '_input_username_0';
+      const passwordField = this.loginForm.$name + '_input_password_1';
+      this.loginForm[usernameField].$setTouched();
+      this.loginForm[passwordField].$setTouched();
       return;
     }
 
@@ -56,13 +61,7 @@ class ModalInstanceController {
         this.Flash.create('danger', 'There was an error logging you in. Try again later');
       }).bind(this));
     return;
-
-    this.$uibModalInstance.close();
-  };
-
-  cancel() {
-    this.$uibModalInstance.dismiss('cancel');
-  };
+  }
 }
 
-export default ModalInstanceController;
+export default LoginDialogController;

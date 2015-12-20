@@ -1,10 +1,11 @@
 class AuthApi {
 
-  constructor($http, $localStorage, API) {
+  constructor($http, $localStorage, API, $window) {
     'ngInject';
     this.$http = $http;
     this.$localStorage = $localStorage;
     this.prefix = API;
+    this.$window = $window;
   }
 
   login(username, password) {
@@ -29,10 +30,10 @@ class AuthApi {
     }
   }
 
-  parseJwt(token) {
+  parseToken(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse($window.atob(base64));
+    return JSON.parse(this.$window.atob(base64));
   }
 
   saveToken(token) {
