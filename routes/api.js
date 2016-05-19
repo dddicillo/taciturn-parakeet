@@ -38,7 +38,11 @@ router.post('/login', function (req, res) {
       } else {
 
         // Create a token
-        var token = jwt.sign({ _id: user._id, admin: user.admin }, process.env.JSON_TOKEN_SECRET, {
+        var token = jwt.sign({
+          _id: user._id,
+          username: user.username,
+          admin: user.admin
+        }, process.env.JSON_TOKEN_SECRET, {
           expiresIn: 86400 // expires in 24 hours
         });
 

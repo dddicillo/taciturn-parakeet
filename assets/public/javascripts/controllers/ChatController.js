@@ -1,6 +1,6 @@
 class ChatController {
 
-  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope) {
+  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi) {
     'ngInject';
     this.Socket = Socket;
     this.MediaStream = MediaStream;
@@ -8,6 +8,8 @@ class ChatController {
     this.$sce = $sce;
     this.$rootScope = $rootScope;
     this.peers = [];
+
+    console.log(AuthApi.parseToken(AuthApi.getToken()));
 
     this.MediaStream.getUserMedia()
       .then((function(stream) {
@@ -28,6 +30,7 @@ class ChatController {
     this.ChatRoom.on('stream.added', (function (peer) {
       this.peers.push({
         id: peer.id,
+        username: peer.username,
         streamUrl: URL.createObjectURL(peer.stream)
       });
       console.log('peer connected');
