@@ -21,13 +21,13 @@ const web_root = web_root_prefix + '/' + server_name + '/public';
 const paths = {
   js: {
     src: ['assets/public/javascripts/voicechat.js',
+          'assets/public/javascripts/sockets.js',
           'assets/public/javascripts/**/*.js'],
     dest1: web_root + '/javascripts',
     dest2: 'assets/dev/public/javascripts'
   },
   jsVendor: {
     src: ['node_modules/angular/angular.js',
-          'node_modules/angular-route/angular-route.js',
           'node_modules/angular-messages/angular-messages.js',
           'node_modules/ngstorage/ngStorage.js',
           'node_modules/angular-aria/angular-aria.js',
@@ -37,7 +37,10 @@ const paths = {
           'node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.js',
           'node_modules/api-check/dist/api-check.js',
           'node_modules/angular-formly/dist/formly.js',
-          'node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js'],
+          'node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+          'node_modules/simplewebrtc/latest-v2.js',
+          'node_modules/webrtc-adapter/out/adapter.js',
+          'node_modules/angular-ui-router/release/angular-ui-router.js'],
     dest1: web_root + '/javascripts',
     dest2: 'assets/dev/vendor/javascripts'
   },

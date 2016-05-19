@@ -1,14 +1,11 @@
-class LoginDialogController {
+class SignupController {
 
-  constructor($mdDialog, Flash, AuthApi) {
+  constructor(AuthApi, Flash) {
     'ngInject';
-    this.$mdDialog = $mdDialog;
-
-    this.Flash = Flash;
     this.AuthApi = AuthApi;
+    this.Flash = Flash;
 
-    this.credentials = {};
-    this.loginFields = [
+    this.signupFields = [
       {
         key: 'username',
         type: 'input',
@@ -28,13 +25,19 @@ class LoginDialogController {
           required: true,
           minlength: 8
         }
+      },
+      {
+        key: 'password-confirmation',
+        type: 'input',
+        templateOptions: {
+          type: 'password',
+          label: 'Confirm Password',
+          required: true,
+          minlength: 8
+        }
       }
     ];
     this.Flash.dismiss();
-  }
-
-  cancel() {
-    this.$mdDialog.cancel();
   }
 
   submit() {
@@ -49,21 +52,7 @@ class LoginDialogController {
       this.loginForm[passwordField].$setTouched();
       return;
     }
-
-    this.AuthApi.login(this.credentials.username, this.credentials.password).then(
-      (function(res) {
-        this.Flash.create(res.data.status, res.data.message);
-        if (res.data.success) {
-          this.$mdDialog.hide(true);
-        } else {
-          this.$mdDialog.hide(res.data);
-        }
-      }).bind(this),
-      (function(err) {
-        this.Flash.create('danger', 'There was an error logging you in. Try again later');
-      }).bind(this));
-    return;
   }
 }
 
-export default LoginDialogController;
+export default SignupController;

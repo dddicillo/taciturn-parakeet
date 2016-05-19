@@ -1,0 +1,13 @@
+<div id="chat-container">
+
+  <div class="video-wrapper">
+    <video class="col-md-4" ng-repeat="peer in vm.peers" ng-src="{{ peer.streamUrl | trustUrl }}" autoplay></video>
+  </div>
+
+  <div class="video-wrapper">
+    <div class="col-md-2">
+      <video ng-src="{{ vm.streamUrl | trustUrl }}" autoplay muted></video>
+    </div>
+  </div>
+
+</div>

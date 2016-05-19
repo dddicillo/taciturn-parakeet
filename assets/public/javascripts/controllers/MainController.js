@@ -1,9 +1,10 @@
 class MainController {
 
-  constructor(AuthApi, $mdDialog) {
+  constructor(AuthApi, $mdDialog, $state) {
     'ngInject';
     this.AuthApi = AuthApi;
     this.$mdDialog = $mdDialog;
+    this.$state = $state;
   }
 
   isAuthed() {
@@ -19,11 +20,12 @@ class MainController {
       targetEvent: event,
       clickOutsideToClose:true
     })
-    .then(function(answer) {
-
-    }, function() {
-
-    });
+    .then((function(success) {
+      console.log(success);
+      if (success) {
+        this.$state.transitionTo('chat');
+      }
+    }).bind(this));
   }
 
   showLogout(event) {
@@ -36,6 +38,7 @@ class MainController {
 
     this.$mdDialog.show(confirm).then((function() {
       this.AuthApi.logout();
+      this.$state.transitionTo('home');
     }).bind(this));
   }
 }
