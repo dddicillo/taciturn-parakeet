@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GUM Test</title>
+    <style media="screen">
+      video {
+        height: 225px;
+        width: calc(50% - 12px);
+      }
+    </style>
+  </head>
+  <body>
+    <video id="local" autoplay muted></video>
+    <video id="remote" autoplay></video>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.js" type="text/javascript"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+      var localMedia = document.getElementById('local');
+      var remoteMedia = document.getElementById('remote');
+
+      (function() {
+        /* Connect to signaling server */
+        window.socket = io.connect('https://voicechat.dev');
+
+        /* Get local media stream */
+        window.gum = function gum(pc) {
+          navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true
+          })
+          .then(function(stream) {
+            window.stream = stream;
+
+            localMedia.src = URL.createObjectURL(stream);
+            pc.addStream(stream);
+          })
+          .catch(function(error) {
+            if (error.name === 'ConstraintNotSatisfiedError') {
+              console.error('The resolution ' + constraints.video.width.exact + 'x' +
+                  constraints.video.width.exact + ' px is not supported by your device.');
+            } else if (error.name === 'PermissionDeniedError') {
+              console.error('Permissions have not been granted to use your camera and ' +
+                'microphone, you need to allow the page access to your devices in ' +
+                'order for the demo to work.');
+            }
+            console.error('getUserMedia error: ' + error.name, error);
+          });
+        }
+
+        /* Create Peer Connection */
+        window.cpc = function createPeerConnection() {
+          try {
+            pc = new RTCPeerConnection();
+            window.pc = pc;
+          } catch (ex) {
+            console.log('Failed to create PeerConnection, exception: ' + ex.message);
+            return;
+          }
+
+          // Send ICE candidates to peers
+          pc.onicecandidate = function(event) {
+            if (event.candidate) {
+              socket.emit('candidate', event.candidate);
+            }
+          }
+
+          // Called after GUM
+          // Sends offer to peer
+          pc.onnegotiationneeded = function() {
+            pc.createOffer()
+            .then(function(offer) {
+              return pc.setLocalDescription(offer);
+            })
+            .then(function() {
+              socket.emit('description', pc.localDescription);
+            })
+            .catch(onError);
+          }
+
+          pc.onaddstream = function(event) {
+            remoteMedia.src = URL.createObjectURL(event.stream);
+          }
+        }
+
+        function onError(error) {
+          console.error(error.name + ': ' + error.message);
+        }
+
+        socket.on('candidate', function(candidate) {
+          console.log('Received candidate message');
+          pc.addIceCandidate(new RTCIceCandidate(candidate));
+        });
+
+        socket.on('description', function(desc) {
+          console.log('Received description message');
+          pc.setRemoteDescription(new RTCSessionDescription(desc), function() {
+            if (pc.remoteDescription.type == 'offer') {
+              pc.createAnswer()
+              .then(function(answer) {
+                return pc.setLocalDescription(answer);
+              })
+              .then(function() {
+                console.log('Sending answer');
+                socket.emit('description', pc.localDescription);
+              })
+              .catch(onError);
+            }
+          }, onError);
+        });
+
+      })();
+
+      window.cpc();
+      window.gum(pc);
+    </script>
+  </body>
+</html>

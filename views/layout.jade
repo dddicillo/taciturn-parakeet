@@ -5,11 +5,13 @@ html(ng-app='voice-chat' ng-strict-di)
     link(rel='stylesheet', href='/stylesheets/bootstrap-custom.css')
     script(src='/javascripts/deps.js')
     script(src='/javascripts/voicechat.min.js')
+    
   body(ng-controller='MainController as vm')
     md-toolbar
       div(class='md-toolbar-tools')
         span Bloop
         span(flex)
+        md-button(ng-hide='vm.isAuthed()' href='#/signup') Sign Up
         md-button(class='md-raised' ng-hide='vm.isAuthed()' ng-click='vm.showLogin($event)') Login
         md-button(class='md-raised' ng-show='vm.isAuthed()' ng-click='vm.showLogout($event)') Logout
-    md-content(ng-view flex layout-padding)
+    md-content(ui-view flex layout-padding)

@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('temp:server');
 var http = require('http');
+var io = require('socket.io');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,43 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Create Socket.io server.
+ */
+
+io = io(server);
+
+var userIdSeq = 0;
+var activeConnections = [];
+io.on('connection', function(socket) {
+
+  // Create userId and signal that a new peer joined
+  socket.on('init', function() {
+    socket.userId = userIdSeq++;
+    console.log('User #' + socket.userId + ' joined');
+    activeConnections.forEach(function(peer) {
+      console.log('Signalling peer.join to user #' + peer.userId);
+      peer.emit('peer.joined', socket.userId);
+    });
+    activeConnections[socket.userId] = socket;
+    socket.emit('id.created', socket.userId);
+  });
+
+  // Route PeerConnection sdp offer/answer and ice candidates to appropriate receiver
+  socket.on('signal', function(data) {
+    console.log('Forwarding ' + data.type + ' signal from user #' + data.senderId + ' to user #' + data.receiverId);
+    activeConnections[data.receiverId].emit('signal', data);
+  });
+
+  socket.on('disconnect', function() {
+    console.log('User #' + socket.userId + ' left');
+    delete activeConnections.indexOf(socket);
+    activeConnections.forEach(function(peer) {
+      peer.emit('peer.left', socket.userId);
+    });
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
