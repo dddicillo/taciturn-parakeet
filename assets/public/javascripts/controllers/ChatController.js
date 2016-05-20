@@ -1,15 +1,17 @@
 class ChatController {
 
-  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi) {
+  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi, SpeechListener) {
     'ngInject';
     this.Socket = Socket;
     this.MediaStream = MediaStream;
     this.ChatRoom = ChatRoom;
     this.$sce = $sce;
     this.$rootScope = $rootScope;
-    this.peers = [];
+    this.SpeechListener = SpeechListener;
 
-    console.log(AuthApi.parseToken(AuthApi.getToken()));
+    this.currentUsername = AuthApi.getCurrentUser().username;
+    this.peers = [];
+    window.peers = this.peers;
 
     this.MediaStream.getUserMedia()
       .then((function(stream) {
@@ -28,11 +30,10 @@ class ChatController {
 
   onStream() {
     this.ChatRoom.on('stream.added', (function (peer) {
-      this.peers.push({
-        id: peer.id,
-        username: peer.username,
-        streamUrl: URL.createObjectURL(peer.stream)
-      });
+      peer.streamUrl = URL.createObjectURL(peer.stream);
+      peer.speechListener = this.SpeechListener.createListener(peer);
+      this.peers.push(peer);
+
       console.log('peer connected');
       console.log(this.peers);
       this.$rootScope.$apply();

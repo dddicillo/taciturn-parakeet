@@ -1,13 +1,23 @@
-<div id="chat-container">
+<section layout="row" class="sidenav-container" flex>
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+    <md-content layout-padding>
 
-  <div class="video-wrapper">
-    <video class="col-md-4" ng-repeat="peer in vm.peers" ng-src="{{ peer.streamUrl | trustUrl }}" autoplay></video>
-  </div>
+      <!-- Local Media -->
+      <div class="video-wrapper">
+        <md-whiteframe class="md-whiteframe-3dp" flex layout layout-padding layout-align="flex-start center">
+          <h3 class="md-title">{{ vm.currentUsername }}</h3>
+        </md-whiteframe>
+        <video ng-src="{{ vm.streamUrl | trustUrl }}" autoplay muted></video>
+      </div>
 
-  <div class="video-wrapper">
-    <div class="col-md-2">
-      <video ng-src="{{ vm.streamUrl | trustUrl }}" autoplay muted></video>
-    </div>
-  </div>
+      <!-- Remote Media -->
+      <div ng-repeat="peer in vm.peers" class="video-wrapper">
+        <md-whiteframe ng-class="{ speaking: peer.speaking }" class="md-whiteframe-3dp media-stream" flex layout layout-padding layout-align="flex-start center">
+          <h3 class="md-title">{{ peer.username }}</h3>
+        </md-whiteframe>
+        <video ng-src="{{ peer.streamUrl | trustUrl }}" autoplay></video>
+      </div>
 
-</div>
+    </md-content>
+  </md-sidenav>
+</section>
