@@ -7,18 +7,34 @@ class SpeechListener {
     this.$rootScope = $rootScope;
   }
 
-  createListener(peer) {
+  createPeerListener(peer) {
     const listener = hark(peer.stream);
 
     listener.on('speaking', (function() {
       peer.speaking = true;
-      console.log('speaking');
-      console.log(peer);
       this.$rootScope.$apply();
     }).bind(this));
 
     listener.on('stopped_speaking', (function() {
       peer.speaking = false;
+      this.$rootScope.$apply();
+    }).bind(this));
+
+    return listener
+  }
+
+  createLocalListener(controller) {
+    console.log('controller context');
+    console.log(controller);
+    const listener = hark(controller.stream);
+
+    listener.on('speaking', (function() {
+      controller.speaking = true;
+      this.$rootScope.$apply();
+    }).bind(this));
+
+    listener.on('stopped_speaking', (function() {
+      controller.speaking = false;
       this.$rootScope.$apply();
     }).bind(this));
 

@@ -4,7 +4,7 @@
 
       <!-- Local Media -->
       <div class="video-wrapper">
-        <md-whiteframe class="md-whiteframe-3dp" flex layout layout-padding layout-align="flex-start center">
+        <md-whiteframe ng-class="{ speaking: vm.speaking }" class="md-whiteframe-3dp media-stream" flex layout layout-padding layout-align="flex-start center">
           <h3 class="md-title">{{ vm.currentUsername }}</h3>
         </md-whiteframe>
         <video ng-src="{{ vm.streamUrl | trustUrl }}" autoplay muted></video>

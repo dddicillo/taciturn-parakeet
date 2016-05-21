@@ -16,7 +16,9 @@ class ChatController {
     this.MediaStream.getUserMedia()
       .then((function(stream) {
         this.ChatRoom.initialize(stream);
+        this.stream = stream;
         this.streamUrl = URL.createObjectURL(stream);
+        this.SpeechListener.createLocalListener(this);
         this.ChatRoom.joinRoom();
         this.$rootScope.$apply();
       }).bind(this))
@@ -31,7 +33,7 @@ class ChatController {
   onStream() {
     this.ChatRoom.on('stream.added', (function (peer) {
       peer.streamUrl = URL.createObjectURL(peer.stream);
-      peer.speechListener = this.SpeechListener.createListener(peer);
+      peer.speechListener = this.SpeechListener.createPeerListener(peer);
       this.peers.push(peer);
 
       console.log('peer connected');
