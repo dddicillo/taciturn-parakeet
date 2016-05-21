@@ -1,0 +1,20 @@
+md-content.text-chat-wrapper {
+  flex-grow: 1;
+  align-items: stretch;
+}
+
+.chat-history {
+  flex-grow: 1;
+}
+
+.chat-form {
+  max-height: 100px;
+
+  form {
+    align-items: flex-start;
+  }
+}
+
+.message-content {
+  flex-grow: 1;
+}

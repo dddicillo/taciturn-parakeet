@@ -50,6 +50,10 @@ class ChatController {
       console.log('peer disconnected');
     }).bind(this));
   }
+
+  sendMessage() {
+    console.log('Sending message...');
+  }
 }
 
 export default ChatController;
