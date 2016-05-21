@@ -11,6 +11,10 @@ class MainController {
     return this.AuthApi.isAuthed();
   }
 
+  isCover() {
+    return this.$state.current.name === "home";
+  }
+
   showLogin(event) {
     this.$mdDialog.show({
       controller: 'LoginDialogController',

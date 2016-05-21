@@ -11,14 +11,14 @@ class PeerConnection {
     this.RTCPeerConnections = {};
   }
 
-  getOrCreateInstance(peerId) {
+  getOrCreateInstance(username, peerId) {
     if (this.RTCPeerConnections[peerId]) {
       return this.RTCPeerConnections[peerId];
     }
-    return this.newInstance(peerId);
+    return this.newInstance(username, peerId);
   }
 
-  newInstance(peerId) {
+  newInstance(username, peerId) {
     let pc;
     try {
       pc = new RTCPeerConnection();
@@ -28,6 +28,7 @@ class PeerConnection {
     }
     this.RTCPeerConnections[peerId] = pc;
     console.log('stream: ' + this.stream);
+    pc.username = username;
     pc.peerId = peerId;
     pc.Socket = this.Socket;
     pc.$injector = this.$injector;
@@ -57,14 +58,15 @@ class PeerConnection {
     console.log(event);
     this.$injector.get('ChatRoom').emit('stream.added', {
       id: this.peerId,
+      username: this.username,
       stream: event.stream
     });
   }
 
   // Send description offer to peer
-  sendOffer(senderId, receiverId) {
+  sendOffer(username, senderId, receiverId) {
     console.log('sending offer');
-    const pc = this.getOrCreateInstance(receiverId);
+    const pc = this.getOrCreateInstance(username, receiverId);
     pc.createOffer()
       .then((function(sdp) {
         pc.setLocalDescription(sdp);
@@ -77,9 +79,9 @@ class PeerConnection {
       }).bind(this));
   }
 
-  handleReceiveOffer(data) {
+  handleReceiveOffer(username, data) {
     console.log('offer received');
-    const pc = this.getOrCreateInstance(data.senderId);
+    const pc = this.getOrCreateInstance(username, data.senderId);
     pc.setRemoteDescription(new RTCSessionDescription(data.sdp))
       .then((function() {
         pc.createAnswer()
@@ -99,18 +101,18 @@ class PeerConnection {
       });
   }
 
-  handleReceiveAnswer(data) {
+  handleReceiveAnswer(username, data) {
     console.log('answer received');
-    var pc = this.getOrCreateInstance(data.senderId);
+    var pc = this.getOrCreateInstance(username, data.senderId);
     pc.setRemoteDescription(new RTCSessionDescription(data.sdp))
       .catch(function(error) {
         console.error(error.name + ': ' + error.message);
       });
   }
 
-  handleReceiveIce(data) {
+  handleReceiveIce(username, data) {
     console.log('ice candidate received');
-    var pc = this.getOrCreateInstance(data.senderId);
+    var pc = this.getOrCreateInstance(username, data.senderId);
     pc.addIceCandidate(new RTCIceCandidate(data.candidate));
   }
 

@@ -4,7 +4,7 @@ let self;
 
 class ChatRoom extends EventEmitter {
 
-  constructor(Socket, PeerConnection) {
+  constructor(Socket, PeerConnection, AuthApi) {
     'ngInject';
     super();
 
@@ -12,6 +12,7 @@ class ChatRoom extends EventEmitter {
 
     this.Socket = Socket;
     this.PeerConnection = PeerConnection;
+    this.AuthApi = AuthApi;
 
     this.listenForRTCEvents();
   }
@@ -25,8 +26,8 @@ class ChatRoom extends EventEmitter {
     }).bind(this));
 
     // Peer joined the room
-    this.Socket.on('peer.joined', (function(peerId) {
-      this.PeerConnection.sendOffer(this.currentId, peerId);
+    this.Socket.on('peer.joined', (function(username, peerId) {
+      this.PeerConnection.sendOffer(username, this.currentId, peerId);
     }).bind(this));
 
     // Peer left the room
@@ -38,16 +39,16 @@ class ChatRoom extends EventEmitter {
     this.Socket.on('signal', this.onSignal.bind(this));
   }
 
-  onSignal(data) {
+  onSignal(username, data) {
     switch (data.type) {
       case 'sdp-offer':
-        self.PeerConnection.handleReceiveOffer(data);
+        self.PeerConnection.handleReceiveOffer(username, data);
         break;
       case 'sdp-answer':
-        self.PeerConnection.handleReceiveAnswer(data);
+        self.PeerConnection.handleReceiveAnswer(username, data);
         break;
       case 'ice-candidate':
-        self.PeerConnection.handleReceiveIce(data);
+        self.PeerConnection.handleReceiveIce(username, data);
         break;
     }
   }
@@ -57,7 +58,7 @@ class ChatRoom extends EventEmitter {
   }
 
   joinRoom() {
-    this.Socket.emit('init');
+    this.Socket.emit('init', this.AuthApi.getCurrentUser());
   }
 }
 

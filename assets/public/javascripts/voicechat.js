@@ -8,6 +8,7 @@ import Socket from './services/Socket';
 import MediaStream from './services/MediaStream';
 import PeerConnection from './services/PeerConnection';
 import ChatRoom from './services/ChatRoom';
+import SpeechListener from './services/SpeechListener';
 import CustomFlashDirective from './directives/CustomFlashDirective';
 import AuthInterceptor from './interceptors/AuthInterceptor';
 
@@ -79,6 +80,7 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
   app.service('MediaStream', MediaStream);
   app.service('PeerConnection', PeerConnection);
   app.service('ChatRoom', ChatRoom);
+  app.service('SpeechListener', SpeechListener);
 
   app.directive('customFlash', CustomFlashDirective);
 
@@ -104,7 +106,7 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
 
   app.constant('API', '/api/v1');
 
-  app.filter("trustUrl", ['$sce', function ($sce) {
+  app.filter('trustUrl', ['$sce', function ($sce) {
         return function (recordingUrl) {
             return $sce.trustAsResourceUrl(recordingUrl);
         };

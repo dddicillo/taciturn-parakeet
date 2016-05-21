@@ -30,6 +30,15 @@ class AuthApi {
     }
   }
 
+  getCurrentUser() {
+    const token = this.getToken();
+
+    if (token) {
+      const params = this.parseToken(token);
+      return { id: params._id, username: params.username };
+    }
+  }
+
   parseToken(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');

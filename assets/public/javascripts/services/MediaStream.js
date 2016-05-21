@@ -8,7 +8,7 @@ class MediaStream {
   getUserMedia() {
     if (!this.streamPromise) {
       this.streamPromise = navigator.mediaDevices.getUserMedia({
-        audio: false,
+        audio: true,
         video: true
       });
     }
