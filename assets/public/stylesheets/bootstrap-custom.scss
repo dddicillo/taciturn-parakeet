@@ -16,6 +16,6 @@ $border-radius-small:       0px;
 @import "stream";
 @import "text-chat";
 
-.ng-scope {
-  height: 100%;
+.body-container {
+  height: calc(100% - 64px);
 }

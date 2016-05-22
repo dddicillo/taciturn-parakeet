@@ -25,7 +25,8 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
     'flash',
     'ui.bootstrap',
     'formly',
-    'formlyBootstrap'
+    'formlyBootstrap',
+    'yaru22.angular-timeago'
   ]);
 
   // Configure routes

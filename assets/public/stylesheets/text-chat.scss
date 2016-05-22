@@ -1,17 +1,46 @@
 md-content.text-chat-wrapper {
   flex-grow: 1;
   align-items: stretch;
-}
 
-.chat-history {
-  flex-grow: 1;
-}
+  md-whiteframe {
+    background-color: white;
+  }
 
-.chat-form {
-  max-height: 100px;
+  .chat-history {
+    flex-grow: 1;
+    // flex-direction: column-reverse;
+    overflow-y: scroll;
 
-  form {
-    align-items: flex-start;
+    .message-wrapper {
+      min-height: 56px;
+      
+      .message-header {
+        align-items: flex-start;
+
+        .timestamp {
+          color: #bbb;
+          font-size: .8em;
+        }
+      }
+
+      .message-content {
+        overflow-wrap: break-word;
+      }
+
+      hr {
+        width: 100%;
+        margin: 8px 0px;
+      }
+    }
+  }
+
+  .chat-form {
+    max-height: 100px;
+    margin-top: 8px;
+
+    form {
+      align-items: flex-start;
+    }
   }
 }
 

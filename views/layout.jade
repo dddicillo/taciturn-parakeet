@@ -14,4 +14,4 @@ html(ng-app='voice-chat' ng-strict-di)
         md-button(ng-hide='vm.isAuthed()' href='#/signup') Sign Up
         md-button(class='md-raised' ng-hide='vm.isAuthed()' ng-click='vm.showLogin($event)') Login
         md-button(class='md-raised' ng-show='vm.isAuthed()' ng-click='vm.showLogout($event)') Logout
-    md-content(ui-view flex ng-class="{ \"layout-padding\": vm.isCover() }")
+    md-content(ui-view flex ng-class="{ \"layout-padding\": vm.isCover() }" class='body-container')

@@ -11,7 +11,7 @@ class ChatController {
 
     this.currentUsername = AuthApi.getCurrentUser().username;
     this.peers = [];
-    window.peers = this.peers;
+    this.messages = [];
 
     this.MediaStream.getUserMedia()
       .then((function(stream) {
@@ -28,6 +28,7 @@ class ChatController {
 
     this.onStream();
     this.onDisconnect();
+    this.onMessage();
   }
 
   onStream() {
@@ -52,7 +53,20 @@ class ChatController {
   }
 
   sendMessage() {
-    console.log('Sending message...');
+    if (this.content) {
+      this.Socket.emit('message', {
+        sender: this.currentUsername,
+        content: this.content,
+        time: new Date()
+      });
+    }
+  }
+
+  onMessage() {
+    this.Socket.on('message', (function(message) {
+      this.messages.push(message);
+      this.content = undefined;
+    }).bind(this));
   }
 }
 

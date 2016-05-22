@@ -22,16 +22,21 @@
   </md-sidenav>
   <md-content layout="column" flex class="text-chat-wrapper" layout-padding>
       <md-whiteframe layout="column" flex class="md-whiteframe-3dp chat-history" layout-padding>
-        <div ng-repeat="message in vm.messages" layout="row" flex>
-          <span flex>{{ message.sender }}</span>
-          <span flex>{{ message.content }}</span>
-          <span flex>{{ message.time }}</span>
+        <div flex></div>
+        <div ng-repeat="message in vm.messages" layout="column" class="message-wrapper">
+          <hr>
+          <div layout="row" class="message-header" flex>
+            <span><b>{{ message.sender }}</b></span>
+            <span flex></span>
+            <span class="timestamp">{{ message.time | timeAgo }}</span>
+          </div>
+          <span class="message-content" flex>{{ message.content }}</span>
         </div>
       </md-whiteframe>
       <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
         <form layout="row" ng-submit="vm.sendMessage()">
           <md-input-container class="message-content">
-            <input type="text" placeholder="Send a message to the room...">
+            <input type="text" ng-model="vm.content" placeholder="Send a message to the room...">
           </md-input-container>
           <md-button class="md-raised md-primary">Send</md-button>
         </form>
