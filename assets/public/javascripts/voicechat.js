@@ -26,7 +26,8 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
     'ui.bootstrap',
     'formly',
     'formlyBootstrap',
-    'yaru22.angular-timeago'
+    'yaru22.angular-timeago',
+    'luegg.directives'
   ]);
 
   // Configure routes

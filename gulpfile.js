@@ -42,7 +42,8 @@ const paths = {
           'node_modules/webrtc-adapter/out/adapter.js',
           'node_modules/angular-ui-router/release/angular-ui-router.js',
           'node_modules/angular-timeago/dist/angular-timeago-core.js',
-          'node_modules/angular-timeago/src/languages/time-ago-language-en_US.js'],
+          'node_modules/angular-timeago/src/languages/time-ago-language-en_US.js',
+          'node_modules/angularjs-scroll-glue/src/scrollglue.js'],
     dest1: web_root + '/javascripts',
     dest2: 'assets/dev/vendor/javascripts'
   },
