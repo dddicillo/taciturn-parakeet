@@ -1,6 +1,7 @@
 md-content.text-chat-wrapper {
   flex-grow: 1;
   align-items: stretch;
+  background-color: #ddd;
 
   md-whiteframe {
     background-color: white;
@@ -13,7 +14,7 @@ md-content.text-chat-wrapper {
 
     .message-wrapper {
       min-height: 56px;
-      
+
       .message-header {
         align-items: flex-start;
 

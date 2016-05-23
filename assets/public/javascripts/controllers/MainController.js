@@ -1,10 +1,12 @@
 class MainController {
 
-  constructor(AuthApi, $mdDialog, $state) {
+  constructor(AuthApi, $mdDialog, $state, $mdSidenav, $mdMedia) {
     'ngInject';
     this.AuthApi = AuthApi;
     this.$mdDialog = $mdDialog;
     this.$state = $state;
+    this.$mdSidenav = $mdSidenav;
+    this.$mdMedia = $mdMedia;
   }
 
   isAuthed() {
@@ -44,6 +46,10 @@ class MainController {
       this.AuthApi.logout();
       this.$state.transitionTo('home');
     }).bind(this));
+  }
+
+  toggleNav() {
+    this.$mdSidenav('nav').toggle();
   }
 }
 
