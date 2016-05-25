@@ -19,3 +19,8 @@ $border-radius-small:       0px;
 .body-container {
   height: calc(100% - 64px);
 }
+
+md-toast {
+  background-color: #323232;
+  margin: 8px;
+}

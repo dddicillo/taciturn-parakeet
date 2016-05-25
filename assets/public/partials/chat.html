@@ -1,5 +1,5 @@
 <section layout="row" class="sidenav-container">
-  <md-sidenav flex class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-md')">
+  <md-sidenav flex class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-sm')">
     <md-content layout-padding>
 
       <!-- Local Media -->
@@ -20,7 +20,7 @@
 
     </md-content>
   </md-sidenav>
-  <md-content layout="column" flex class="text-chat-wrapper" layout-padding>
+  <md-content layout="column" flex id="text-chat-wrapper" layout-padding>
       <md-whiteframe layout="column" flex class="md-whiteframe-3dp chat-history" scroll-glue layout-padding>
         <div flex></div>
         <div ng-repeat="message in vm.messages" layout="column" class="message-wrapper">

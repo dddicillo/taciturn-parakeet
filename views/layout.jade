@@ -9,7 +9,7 @@ html(ng-app='voice-chat' ng-strict-di)
   body(ng-controller='MainController as vm')
     md-toolbar
       div(class='md-toolbar-tools')
-        md-icon(md-svg-src='/images/icons/ic_menu_48px.svg' class='menu-button' ng-hide="vm.$mdMedia('gt-md') || vm.isCover()" ng-click='vm.toggleNav()') ≡
+        md-icon(md-svg-src='/images/icons/ic_menu_48px.svg' class='menu-button' ng-hide="vm.$mdMedia('gt-sm') || vm.isCover()" ng-click='vm.toggleNav()') ≡
         span Bloop
         span(flex)
         md-button(ng-hide='vm.isAuthed()' href='#/signup') Sign Up
