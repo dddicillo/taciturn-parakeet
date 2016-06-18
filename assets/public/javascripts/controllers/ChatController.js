@@ -1,6 +1,6 @@
 class ChatController {
 
-  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi, SpeechListener) {
+  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi, SpeechListener, $mdToast) {
     'ngInject';
     this.Socket = Socket;
     this.MediaStream = MediaStream;
@@ -8,10 +8,11 @@ class ChatController {
     this.$sce = $sce;
     this.$rootScope = $rootScope;
     this.SpeechListener = SpeechListener;
+    this.$mdToast = $mdToast;
 
     this.currentUsername = AuthApi.getCurrentUser().username;
     this.peers = [];
-    window.peers = this.peers;
+    this.messages = [];
 
     this.MediaStream.getUserMedia()
       .then((function(stream) {
@@ -27,7 +28,9 @@ class ChatController {
       });
 
     this.onStream();
+    this.onConnect();
     this.onDisconnect();
+    this.onMessage();
   }
 
   onStream() {
@@ -37,17 +40,56 @@ class ChatController {
       this.peers.push(peer);
 
       console.log('peer connected');
-      console.log(this.peers);
       this.$rootScope.$apply();
+    }).bind(this));
+  }
+
+  onConnect() {
+    this.ChatRoom.on('peer.joined', (function (username) {
+      // Notify
+      this.$mdToast.show(
+        this.$mdToast.simple()
+          .textContent(username + ' joined the chat')
+          .position('top right')
+          .parent(angular.element(document.querySelector('#text-chat-wrapper')))
+          .hideDelay(3000)
+      );
     }).bind(this));
   }
 
   onDisconnect() {
     this.ChatRoom.on('peer.left', (function (peerId) {
-      this.peers = this.peers.filter(function (p) {
-        return p.id !== peerId;
+      const peer = this.peers.filter(function (p) {
+        return p.id === peerId;
       });
+      this.peers.splice(this.peers.indexOf(peer), 1);
       console.log('peer disconnected');
+console.log(peer);
+      // Notify
+      this.$mdToast.show(
+        this.$mdToast.simple()
+          .textContent(peer[0].username + ' left the chat')
+          .position('top right')
+          .parent(angular.element(document.querySelector('#text-chat-wrapper')))
+          .hideDelay(3000)
+      );
+    }).bind(this));
+  }
+
+  sendMessage() {
+    if (this.content) {
+      this.Socket.emit('message', {
+        sender: this.currentUsername,
+        content: this.content,
+        time: new Date()
+      });
+    }
+  }
+
+  onMessage() {
+    this.Socket.on('message', (function(message) {
+      this.messages.push(message);
+      this.content = undefined;
     }).bind(this));
   }
 }

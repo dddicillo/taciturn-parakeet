@@ -1,5 +1,5 @@
-<section layout="row" class="sidenav-container" flex>
-  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+<section layout="row" class="sidenav-container">
+  <md-sidenav flex class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-sm')">
     <md-content layout-padding>
 
       <!-- Local Media -->
@@ -20,4 +20,26 @@
 
     </md-content>
   </md-sidenav>
+  <md-content layout="column" flex id="text-chat-wrapper" layout-padding>
+      <md-whiteframe layout="column" flex class="md-whiteframe-3dp chat-history" scroll-glue layout-padding>
+        <div flex></div>
+        <div ng-repeat="message in vm.messages" layout="column" class="message-wrapper">
+          <hr>
+          <div layout="row" class="message-header" flex>
+            <span><b>{{ message.sender }}</b></span>
+            <span flex></span>
+            <span class="timestamp">{{ message.time | timeAgo }}</span>
+          </div>
+          <span class="message-content" flex>{{ message.content }}</span>
+        </div>
+      </md-whiteframe>
+      <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
+        <form layout="row" ng-submit="vm.sendMessage()">
+          <md-input-container class="message-content">
+            <input type="text" ng-model="vm.content" placeholder="Send a message to the room...">
+          </md-input-container>
+          <md-button class="md-raised md-primary">Send</md-button>
+        </form>
+      </md-whiteframe>
+  </md-content>
 </section>

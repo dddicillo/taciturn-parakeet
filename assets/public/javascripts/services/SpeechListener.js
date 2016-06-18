@@ -24,8 +24,6 @@ class SpeechListener {
   }
 
   createLocalListener(controller) {
-    console.log('controller context');
-    console.log(controller);
     const listener = hark(controller.stream);
 
     listener.on('speaking', (function() {

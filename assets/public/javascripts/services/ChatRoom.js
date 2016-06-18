@@ -28,6 +28,7 @@ class ChatRoom extends EventEmitter {
     // Peer joined the room
     this.Socket.on('peer.joined', (function(username, peerId) {
       this.PeerConnection.sendOffer(username, this.currentId, peerId);
+      this.emit('peer.joined', username);
     }).bind(this));
 
     // Peer left the room
