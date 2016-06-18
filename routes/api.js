@@ -81,7 +81,7 @@ router.use(function(req, res, next) {
   }
 });
 
-// GET	Get all the users.
+// GET Get all the users.
 router.get('/users', function (req, res) {
   if (!req.current_user.admin) {
     res.sendStatus(403);
@@ -94,7 +94,7 @@ router.get('/users', function (req, res) {
   }
 });
 
-// GET	Get a single user.
+// GET Get a single user.
 router.get('/users/:id', function (req, res) {
   var user = User.findById(req.params.id, function(err, user) {
     if (err) res.json(err);
@@ -109,7 +109,7 @@ router.use(function(req, res, next) {
   }
 });
 
-// PUT	Update a user with new info.
+// PUT Update a user with new info.
 router.put('/users/:id', function (req, res) {
   User.findById(req.params.id, function(err, user) {
     if (err) res.json(err);

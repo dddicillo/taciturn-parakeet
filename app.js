@@ -10,6 +10,7 @@ const sass = require('node-sass-middleware');
 // Routes
 const routes = require('./routes/index');
 const users = require('./routes/users');
+const linkPreview = require('./routes/linkPreview');
 const api = require('./routes/api');
 
 const app = express();
@@ -53,8 +54,9 @@ app.use(express.static(path.join(__dirname, 'assets/public')));
 app.use(express.static(path.join(__dirname, 'assets/vendor')));
 
 app.use('/', routes);
+app.use('/api/v1', api); // All following routes require authentication
 app.use('/users', users);
-app.use('/api/v1', api);
+app.use('/link-preview', linkPreview);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
