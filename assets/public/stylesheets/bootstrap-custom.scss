@@ -15,6 +15,7 @@ $border-radius-small:       0px;
 @import "sidenav";
 @import "stream";
 @import "text-chat";
+@import "link-preview";
 
 .body-container {
   height: calc(100% - 64px);

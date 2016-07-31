@@ -34,7 +34,7 @@ Vagrant.configure(2) do |config|
   config.bindfs.bind_folder "/var/www/voicechat.dev/public", "/var/www/voicechat.dev/public"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "1024"
+    vb.memory = "2048"
     vb.cpus = 2
   end
 

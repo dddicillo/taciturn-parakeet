@@ -1,9 +1,12 @@
 var rp = require('request-promise');
 var cheerio = require('cheerio');
+var urlParser = require('url');
+var StringBuilder = require('string-builder');
 
 linkPreviewService = {
 
   preview: function(url) {
+    this.parsedUrl = urlParser.parse(url);
     return this.getDom(url)
       .then((function($) {
         return this.extractMetadata($);
@@ -25,7 +28,10 @@ linkPreviewService = {
       title: this.getTitle($),
       description: this.getDescription($),
       images: this.getImages($),
-      video: undefined
+      video: undefined,
+      sitename: this.getSitename($),
+      hostname: this.getHostname(),
+      favicon: this.getFavicon()
     }
   },
 
@@ -47,6 +53,23 @@ linkPreviewService = {
       $('link[rel="image_src"]').attr('content');
 
     return imageSrc;
+  },
+
+  getSitename: function($) {
+    return $('meta[property="og:site_name"]').attr('content');
+  },
+
+  getHostname: function() {
+    return this.parsedUrl.hostname;
+  },
+
+  getFavicon: function() {
+    var sb = new StringBuilder();
+    sb.append(this.parsedUrl.protocol);
+    sb.append('//' + this.parsedUrl.hostname);
+    if (this.parsedUrl.port) sb.append(':' + this.parsedUrl.port);
+    sb.append('/favicon.ico');
+    return sb.toString();
   }
 }
 

@@ -9,7 +9,7 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 const sass = require('gulp-sass');
-const minifyCss = require('gulp-minify-css');
+const minifyCss = require('gulp-clean-css');
 const plumber = require('gulp-plumber');
 const imagemin = require('gulp-imagemin');
 const autoprefixer = require('gulp-autoprefixer');
@@ -38,7 +38,6 @@ const paths = {
           'node_modules/api-check/dist/api-check.js',
           'node_modules/angular-formly/dist/formly.js',
           'node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
-          'node_modules/simplewebrtc/latest-v2.js',
           'node_modules/webrtc-adapter/out/adapter.js',
           'node_modules/angular-ui-router/release/angular-ui-router.js',
           'node_modules/angular-timeago/dist/angular-timeago-core.js',
@@ -131,7 +130,6 @@ gulp.task('css', function() {
 gulp.task('img', function() {
   checkconsts();
   return gulp.src(paths.img.src)
-    .pipe(imagemin())
     .pipe(gulp.dest(paths.img.dest));
 });
 
@@ -143,14 +141,14 @@ gulp.task('html', function() {
     .pipe(gulp.dest(paths.html.dest));
 });
 
+gulp.task('default', gulp.parallel('js', 'css', 'img', 'html'));
+
 // Watch Task
 // Watches JS, CSS, Images, HTML
-gulp.task('watch', ['default'], function() {
-  gulp.watch(paths.js.src, ['js']);
-  gulp.watch(paths.jsVendor.src, ['jsVendor'])
-  gulp.watch(paths.css.src, ['css']);
-  gulp.watch(paths.img.src, ['img']);
-  gulp.watch(paths.html.src, ['html']);
-});
-
-gulp.task('default', ['js', 'css', 'img', 'html']);
+gulp.task('watch', gulp.series('default', function() {
+  gulp.watch(paths.js.src, gulp.series('js'));
+  gulp.watch(paths.jsVendor.src, gulp.series('jsVendor'));
+  gulp.watch(paths.css.src, gulp.series('css'));
+  gulp.watch(paths.img.src, gulp.series('img'));
+  gulp.watch(paths.html.src, gulp.series('html'));
+}));

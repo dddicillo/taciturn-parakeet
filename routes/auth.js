@@ -104,9 +104,11 @@ router.get('/users/:id', function (req, res) {
 
 // Require current user to be the owner for the following routes
 router.use(function(req, res, next) {
-  if (req.current_user._id !== req.params._id) {
+  // TODO: Make this better
+  if (req._parsedUrl.pathname !== '/link-preview' && req.current_user._id !== req.params._id) {
     res.sendStatus(403);
   }
+  next();
 });
 
 // PUT Update a user with new info.

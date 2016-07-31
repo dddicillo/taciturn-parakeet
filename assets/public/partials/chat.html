@@ -1,4 +1,4 @@
-<section layout="row" class="sidenav-container">
+<section layout="row" layout-align="stretch" id="chat-container">
   <md-sidenav flex class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-sm')">
     <md-content layout-padding>
 
@@ -34,11 +34,39 @@
         </div>
       </md-whiteframe>
       <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
-        <form layout="row" ng-submit="vm.sendMessage()">
+        <form layout="column" layout-align="center stretch" ng-submit="vm.getPreview('http://www.cnn.com/2016/07/29/politics/democratic-congressional-campaign-committee-hacked/index.html');">
           <md-input-container class="message-content">
             <input type="text" ng-model="vm.content" placeholder="Send a message to the room...">
           </md-input-container>
-          <md-button class="md-raised md-primary">Send</md-button>
+
+          <!-- Link Preview Template -->
+          <div layout="row" layout-align="center" ng-show="vm.showPreview">
+            <md-card class="link-preview">
+              <md-card-header>
+                <md-card-avatar ng-show="vm.preview.favicon">
+                  <img ng-src="{{ vm.preview.favicon }}"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                  <span class="md-title">{{ vm.preview.sitename }}</span>
+                  <a class="md-subhead" href="{{ vm.preview.hostname }}">{{ vm.preview.hostname }}</a>
+                </md-card-header-text>
+              </md-card-header>
+              <img ng-src="{{ vm.preview.images }}" class="md-card-image">
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">{{ vm.preview.title }}</span>
+                </md-card-title-text>
+              </md-card-title>
+              <md-card-content>
+                <p>{{ vm.preview.description }}</p>
+              </md-card-content>
+            </md-card>
+          </div>
+
+          <div layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-primary">Send</md-button>
+          </div>
         </form>
       </md-whiteframe>
   </md-content>

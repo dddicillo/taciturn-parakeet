@@ -2,12 +2,11 @@ var express = require('express');
 var router = express.Router();
 var previewService = require('../services/linkPreviewService');
 
-router.get('/', function(req, res, next) {
+router.get('/link-preview', function(req, res, next) {
   var url;
   if (url = req.query.url) {
     previewService.preview(url)
       .then(function(linkInfo) {
-        console.log(linkInfo);
         res.json(linkInfo);
       })
       .catch(function(err) {

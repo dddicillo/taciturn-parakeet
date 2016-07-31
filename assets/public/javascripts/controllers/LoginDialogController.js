@@ -50,16 +50,16 @@ class LoginDialogController {
       return;
     }
 
-    this.AuthApi.login(this.credentials.username, this.credentials.password).then(
-      (function(res) {
+    this.AuthApi.login(this.credentials.username, this.credentials.password)
+      .then((function(res) {
         this.Flash.create(res.data.status, res.data.message);
         if (res.data.success) {
           this.$mdDialog.hide(true);
         } else {
           this.$mdDialog.hide(res.data);
         }
-      }).bind(this),
-      (function(err) {
+      }).bind(this))
+      .catch((function(err) {
         this.Flash.create('danger', 'There was an error logging you in. Try again later');
       }).bind(this));
     return;

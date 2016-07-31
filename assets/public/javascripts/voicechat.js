@@ -4,6 +4,7 @@ import SignupController from './controllers/SignupController';
 import ChatController from './controllers/ChatController';
 import UsersApi from './services/UsersApi';
 import AuthApi from './services/AuthApi';
+import LinkPreviewApi from './services/LinkPreviewApi';
 import Socket from './services/Socket';
 import MediaStream from './services/MediaStream';
 import PeerConnection from './services/PeerConnection';
@@ -78,6 +79,7 @@ import AuthInterceptor from './interceptors/AuthInterceptor';
 
   app.service('UsersApi', UsersApi);
   app.service('AuthApi', AuthApi);
+  app.service('LinkPreviewApi', LinkPreviewApi);
   app.service('Socket', Socket);
   app.service('MediaStream', MediaStream);
   app.service('PeerConnection', PeerConnection);

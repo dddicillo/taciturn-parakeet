@@ -1,6 +1,6 @@
 class ChatController {
 
-  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi, SpeechListener, $mdToast) {
+  constructor(Socket, MediaStream, ChatRoom, $sce, $rootScope, AuthApi, SpeechListener, $mdToast, LinkPreviewApi, $window) {
     'ngInject';
     this.Socket = Socket;
     this.MediaStream = MediaStream;
@@ -9,10 +9,14 @@ class ChatController {
     this.$rootScope = $rootScope;
     this.SpeechListener = SpeechListener;
     this.$mdToast = $mdToast;
+    this.LinkPreviewApi = LinkPreviewApi;
+    this.$window = $window;
 
     this.currentUsername = AuthApi.getCurrentUser().username;
     this.peers = [];
     this.messages = [];
+    this.showPreview = false;
+    this.preview = {};
 
     this.MediaStream.getUserMedia()
       .then((function(stream) {
@@ -31,6 +35,9 @@ class ChatController {
     this.onConnect();
     this.onDisconnect();
     this.onMessage();
+
+    this.$window.ChatController = this;
+    // this.getPreview('https://www.rockpapershotgun.com/2016/07/29/whats-it-like-to-launch-an-indie-game-from-china/');
   }
 
   onStream() {
@@ -91,6 +98,17 @@ console.log(peer);
       this.messages.push(message);
       this.content = undefined;
     }).bind(this));
+  }
+
+  getPreview(url) {
+    this.LinkPreviewApi.getMetadata(url)
+      .then((function(previewData) {
+        this.showPreview = true;
+        this.preview = previewData;
+      }).bind(this))
+      .catch((function(err) {
+        console.log('Unable to retrieve link data!');
+      }).bind(this));
   }
 }
 
