@@ -34,13 +34,25 @@
         </div>
       </md-whiteframe>
       <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
-        <form layout="column" layout-align="center stretch" ng-submit="vm.getPreview('http://www.cnn.com/2016/07/29/politics/democratic-congressional-campaign-committee-hacked/index.html');">
+        <form layout="column" layout-align="center stretch" ng-submit="vm.sendMessage()">
           <md-input-container class="message-content">
             <input type="text" ng-model="vm.content" placeholder="Send a message to the room...">
           </md-input-container>
 
+          <!-- Link Loading Template -->
+          <div layout="row" layout-align="center" ng-show="vm.previewState === vm.states.WAITING">
+            <md-card class="link-preview">
+              <md-card-header>
+                <md-card-avatar>
+                  <img src="images/icons/loading.svg">
+                </md-card-avatar>
+              </md-card-header>
+            </md-card>
+          </div>
+
           <!-- Link Preview Template -->
-          <div layout="row" layout-align="center" ng-show="vm.showPreview">
+          <!-- <a href="{{ vm.preview.url }}"> -->
+          <div layout="row" layout-align="center" ng-show="vm.previewState === vm.states.READY">
             <md-card class="link-preview">
               <md-card-header>
                 <md-card-avatar ng-show="vm.preview.favicon">
@@ -48,10 +60,12 @@
                 </md-card-avatar>
                 <md-card-header-text>
                   <span class="md-title">{{ vm.preview.sitename }}</span>
-                  <a class="md-subhead" href="{{ vm.preview.hostname }}">{{ vm.preview.hostname }}</a>
+                  <a class="md-subhead" href="{{ vm.preview.hostname }}">{{ vm.preview.hostname | uppercase }}</a>
                 </md-card-header-text>
               </md-card-header>
-              <img ng-src="{{ vm.preview.images }}" class="md-card-image">
+              <div layout="row" layout-align="center">
+                <img ng-src="{{ vm.preview.images }}" class="md-card-image" onerror="this.style.display='none'">
+              </div>
               <md-card-title>
                 <md-card-title-text>
                   <span class="md-headline">{{ vm.preview.title }}</span>
@@ -62,10 +76,11 @@
               </md-card-content>
             </md-card>
           </div>
+        <!-- </a> -->
 
           <div layout="row">
             <span flex></span>
-            <md-button class="md-raised md-primary">Send</md-button>
+            <md-button class="md-raised md-primary" ng-click="vm.sendMessage()">Send</md-button>
           </div>
         </form>
       </md-whiteframe>

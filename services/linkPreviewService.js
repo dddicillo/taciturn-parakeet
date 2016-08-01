@@ -6,6 +6,7 @@ var StringBuilder = require('string-builder');
 linkPreviewService = {
 
   preview: function(url) {
+    this.url = url;
     this.parsedUrl = urlParser.parse(url);
     return this.getDom(url)
       .then((function($) {
@@ -25,6 +26,7 @@ linkPreviewService = {
 
   extractMetadata: function($) {
     return {
+      url: this.url,
       title: this.getTitle($),
       description: this.getDescription($),
       images: this.getImages($),

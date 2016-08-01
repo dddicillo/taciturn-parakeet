@@ -10,7 +10,7 @@ router.get('/link-preview', function(req, res, next) {
         res.json(linkInfo);
       })
       .catch(function(err) {
-        res.json(err);
+        res.status(404).json(err);
       });
   } else {
     res.sendStatus(400);

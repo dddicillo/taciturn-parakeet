@@ -15,7 +15,13 @@ class ChatController {
     this.currentUsername = AuthApi.getCurrentUser().username;
     this.peers = [];
     this.messages = [];
-    this.showPreview = false;
+
+    this.states = {
+      NONE: 0,
+      WAITING: 1,
+      READY: 2
+    }
+    this.previewState = this.states.NONE;
     this.preview = {};
 
     this.MediaStream.getUserMedia()
@@ -37,7 +43,6 @@ class ChatController {
     this.onMessage();
 
     this.$window.ChatController = this;
-    // this.getPreview('https://www.rockpapershotgun.com/2016/07/29/whats-it-like-to-launch-an-indie-game-from-china/');
   }
 
   onStream() {
@@ -103,12 +108,22 @@ console.log(peer);
   getPreview(url) {
     this.LinkPreviewApi.getMetadata(url)
       .then((function(previewData) {
-        this.showPreview = true;
+        this.previewState = this.states.READY;
         this.preview = previewData;
       }).bind(this))
       .catch((function(err) {
-        console.log('Unable to retrieve link data!');
+        this.previewState = this.states.NONE;
       }).bind(this));
+  }
+
+  checkForUrl() {
+    if (!this.content) return;
+    const url = this.LinkPreviewApi.extractUrl(this.content);
+    if (url && url !== this.preview.url) {
+      this.preview = {};
+      this.previewState = this.states.WAITING;
+      this.getPreview(url);
+    }
   }
 }
 

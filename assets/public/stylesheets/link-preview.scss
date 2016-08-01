@@ -1,3 +1,8 @@
 .link-preview {
   max-width: 70%;
+
+  .md-card-img {
+    max-height: 300px;
+    max-width: 100%;
+  }
 }
