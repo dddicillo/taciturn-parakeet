@@ -36,7 +36,7 @@
       <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
         <form layout="column" layout-align="center stretch" ng-submit="vm.sendMessage()">
           <md-input-container class="message-content">
-            <input type="text" ng-model="vm.content" placeholder="Send a message to the room...">
+            <input type="text" ng-model="vm.content" ng-change="vm.onWhitespace()" ng-trim="false" placeholder="Send a message to the room...">
           </md-input-container>
 
           <!-- Link Loading Template -->

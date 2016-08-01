@@ -117,9 +117,15 @@ console.log(peer);
   }
 
   checkForUrl() {
-    if (!this.content) return;
     const url = this.LinkPreviewApi.extractUrl(this.content);
-    if (url && url !== this.preview.url) {
+    if (url && url[0] !== this.preview.url) {
+      return url[0];
+    }
+  }
+
+  onWhitespace() {
+    var url;
+    if(this.content && this.content.slice(-1) === ' ' && (url = this.checkForUrl())) {
       this.preview = {};
       this.previewState = this.states.WAITING;
       this.getPreview(url);
