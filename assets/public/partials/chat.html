@@ -31,6 +31,33 @@
             <span class="timestamp">{{ message.time | timeAgo }}</span>
           </div>
           <span class="message-content" flex>{{ message.content }}</span>
+
+          <!-- Link Preview -->
+          <div layout="row" layout-align="center" ng-if="message.preview.title">
+            <md-card class="link-preview">
+              <md-card-header>
+                <md-card-avatar ng-show="message.preview.favicon">
+                  <img ng-src="{{ message.preview.favicon }}" onerror="this.style.display='none'"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                  <span class="md-title">{{ message.preview.sitename }}</span>
+                  <a class="md-subhead" href="{{ message.preview.hostname }}">{{ message.preview.hostname | uppercase }}</a>
+                </md-card-header-text>
+              </md-card-header>
+              <div layout="row" layout-align="center">
+                <img ng-src="{{ message.preview.images }}" class="md-card-image" onerror="this.style.display='none'">
+              </div>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">{{ message.preview.title }}</span>
+                </md-card-title-text>
+              </md-card-title>
+              <md-card-content>
+                <p>{{ message.preview.description }}</p>
+              </md-card-content>
+            </md-card>
+          </div>
+
         </div>
       </md-whiteframe>
       <md-whiteframe flex class="md-whiteframe-3dp chat-form" layout-padding>
@@ -52,11 +79,11 @@
 
           <!-- Link Preview Template -->
           <!-- <a href="{{ vm.preview.url }}"> -->
-          <div layout="row" layout-align="center" ng-show="vm.previewState === vm.states.READY">
+          <div layout="row" layout-align="center" ng-show="vm.validPreview()">
             <md-card class="link-preview">
               <md-card-header>
                 <md-card-avatar ng-show="vm.preview.favicon">
-                  <img ng-src="{{ vm.preview.favicon }}"/>
+                  <img ng-src="{{ vm.preview.favicon }}" onerror="this.style.display='none'"/>
                 </md-card-avatar>
                 <md-card-header-text>
                   <span class="md-title">{{ vm.preview.sitename }}</span>

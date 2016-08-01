@@ -90,11 +90,14 @@ console.log(peer);
 
   sendMessage() {
     if (this.content) {
-      this.Socket.emit('message', {
+      const message = {
         sender: this.currentUsername,
         content: this.content,
         time: new Date()
-      });
+      }
+      if (this.preview.title) message.preview = this.preview;
+      this.Socket.emit('message', message);
+      this.previewState = this.states.NONE;
     }
   }
 
@@ -130,6 +133,10 @@ console.log(peer);
       this.previewState = this.states.WAITING;
       this.getPreview(url);
     }
+  }
+
+  validPreview() {
+    return this.previewState === this.states.READY && this.preview.title;
   }
 }
 
